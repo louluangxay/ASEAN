@@ -1,0 +1,256 @@
+<!doctype html>
+
+<html>
+<head>
+	<title>Comparing ASEAN Countries Educational, Healthcare, and Military Spending to US and China</title>
+	<link rel="stylesheet" type="text/css" href="style/style.css" />
+	<script type="text/javascript"
+	        src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		//load the google charts
+		google.charts.load('current',{'packages':['corechart','bar']});
+		
+		//load the Callback function that runs when page loads
+		google.charts.setOnLoadCallback(drawAllSheets);
+		
+		function drawAllSheets() {
+			
+			drawSheetName('mil_spending_line',
+							'SELECT A,B,C,E,F,G,H,I,J,K',
+							mil_spending_lineResponseHandler);
+			
+			drawSheetName('military_spending',
+							'SELECT A,M',
+							military_spendingResponseHandler);
+			
+			drawSheetName('mil_spending_GDP',
+							'SELECT A,M',
+							mil_spending_GDPResponseHandler);
+			
+			drawSheetName('PerCapita',
+							'SELECT A,B,C',
+							PerCapitaResponseHandler);
+			
+			drawSheetName('bubble',
+							'SELECT A,B,C,D,E',
+							bubbleResponseHandler);
+			
+			drawSheetName('mileduc',
+							'SELECT A,B,C,D,E,F,G,H,I,J,K',
+							mileducResponseHandler);
+							
+							
+		} //drawAllSheets
+		
+		function drawSheetName(sheetName, query, responseHandler) {
+			var queryString = encodeURIComponent(query);
+			var query = new google.visualization.Query(
+				'https://docs.google.com/spreadsheets/d/12uzXsy8zWzJt5UMtgust3ZPYXwetyGqf8xWubvCSzXE/gviz/tq?sheet=' +
+				sheetName + '&headers=1&tq=' + queryString);
+			query.send(responseHandler);
+		} //drawSheetName
+		
+		
+		
+		function mil_spending_lineResponseHandler(response){
+			var data= response.getDataTable();
+			var options = {
+						height: 500,
+						vAxis: {title: 'Spending in Million $'},
+						hAxis: {title: 'Years'}
+			};
+			
+			var chart = new google.visualization.LineChart(
+						document.getElementById('mil_spending_line_div'));
+			
+			chart.draw(data, options);
+	
+		} //mil_spending_lineResponseHandler
+		
+		function military_spendingResponseHandler(response){
+			var data = response.getDataTable();
+			//data.sort({column:1, desc: true});
+			
+			var options = {
+						height: 400,
+						legend: 'none',
+						bars: 'horizontal',
+						//isStacked: true,
+						annotations: {alwaysOutside: true},
+						title: 'Military Spending (2017)',
+						vAxis: {title: 'Country'},
+						hAxis: {title: 'Million ($)'}
+			};
+			
+			var chart = new google.visualization.BarChart(document.getElementById(
+						'military_spending_div'));
+			
+			chart.draw(data, options);
+			
+		} 
+		
+		function mil_spending_GDPResponseHandler(response){
+			var data = response.getDataTable();
+			data.sort({column:1, desc: true});
+			
+			var options = {
+						height: 400,
+						legend: 'none',
+						bars: 'horizontal',
+						//isStacked: true,
+						annotations: {alwaysOutside: true},
+						title: 'Military Spending as Share of GDP (2017)',
+						vAxis: {title: 'Country'},
+						hAxis: {title: 'Percentage'}
+			};
+			
+			var chart = new google.visualization.BarChart(document.getElementById(
+						'mil_spending_GDP_div'));
+			
+			chart.draw(data, options);
+			
+		} 
+		
+		function PerCapitaResponseHandler(response){
+			var data = response.getDataTable();
+			
+			var options = {
+        chart: {
+          title: 'Military and GDP per Capita',
+          subtitle: 'Year 2017'
+        },
+        hAxis: {
+          title: 'Military Per Capita',
+          minValue: 0,
+        },
+        vAxis: {
+          title: 'GDP per Capita'
+        },
+        bars: 'horizontal',
+        axes: {
+          y: {
+            0: {side: 'left'}
+          }
+        }
+      };
+      var chart = new google.charts.Bar(document.getElementById('PerCapita_div'));
+      chart.draw(data, options);
+	  
+    }
+		function bubbleResponseHandler(response) {
+			var data = response.getDataTable();
+		
+			var options = {
+			width: 1000,
+			backgroundColor: '#CCFFCC',
+			title: 'Healthcare and Educational Spending ' +
+				   'Compared to Military Spending of ASEAN countries'+
+					'(2017)',
+			hAxis: {title: 'Healthcare'},
+			vAxis: {title: 'Education'},
+			bubble: {textStyle: {fontSize: 11}}
+			};
+			var chart = new google.visualization.BubbleChart(
+					document.getElementById('bubble_div'));
+			chart.draw(data,options);
+			} //bubbleResponseHandler
+			
+		function mileducResponseHandler(response) {
+		
+			var data = response.getDataTable();
+			data.sort({column:5, desc:true});
+			
+			var options = {
+						width: 1000,
+						height: 400,
+						legend: {position: 'top', maxLines: 3},
+						bar: {groupWidth: '50%'},
+						isStacked: true
+			};
+			
+			var chart = new google.visualization.BarChart(document.getElementById(
+						'mileduc_div'));
+			
+			chart.draw(data, options);
+		
+		}
+		
+		
+		
+		
+		
+
+			
+	</script>
+</head>
+<body>
+		<div id="header">
+			<div id="logo">
+				<div id="logo_text">
+					<h1>ASEAN<span  color ="white"> Countries</span></h1>
+					<h2><font color="red" >Education, Healthcare, and Military Spending</font></h2>
+				</div><!-- logo_text -->
+			</div><!-- logo -->
+			<div id="menubar">
+				<ul id="menu">
+					<li class="selected"><a href="ASEAN.html">Home</a></li>
+					<li><a href="analysis.html">Analysis</a></li>
+				</ul>
+			</div><!-- menubar -->
+		</div><!-- header -->
+<div id="content">
+				<!-- insert page content here -->
+				<h1>Analysis of ASEAN Healthcare, Education and Military Expenditure</h1>
+				<p>
+					We wanted to compare ASEAN Healthcare, education and military expenditure as compared to China and the US.  
+                    ASEAN countries are quite unique in there characteristic.  We have some countries that are communist, 
+					others are ruled by a monarch and we have some that are governed by the parliamentary rule.  
+					We expect to see some similarities in some areas and in other some differences. 
+     				</p>
+				
+		 
+	<h2>ASEAN Military Spending by Country (2006-2015)</h2>
+	<p>This is just a nice line chart showing where our countries are when it comes to military spending.  Clearly, we have most of the more economically developed nation gradually increase their military spending.  
+	The 3 countries (Laos, Cambodia, and Brunei) in the bottom consist of their military spending but it's still really low as compared to the other nation-state. Surprising these 3 nations are undemocratic.</p>
+	<div id="mil_spending_line_div"
+	     style="width: 1000px; height: 500px;"></div
+	
+	
+	<h2>Military Spending (2017)</h2>
+	<p> I like this graph because it is just another view to show who is spending more on their military in 2017.</p>
+	<div id="military_spending_div"
+		style ="width: 1000px; height: 500px;"></div	
+			
+	<h2>Military Spending as Share of GDP (2017)</h2>
+	<p> This is very interesting.  I included the US and China in this to see if ASEAN were comparable with their military spending relative to their GDP.  
+	As you can see, we have Singapore fall exceeding the US and China for 2017.  </p>
+	<div id="mil_spending_GDP_div"
+		style ="width: 1000px; height: 500px;"></div			
+	
+	<h2>Military Per Capita vs GDP Per GDP (2017)</h2>
+	<p> This chart is a little hard to see as most of the ASEAN countries really do not spend as much on their military per capita.
+        I will point you to Singapore. From the other chart, this validates the amount their spend on their military. They are right up there with the US.</p>
+	<div id="PerCapita_div"
+		style ="width: 1000px; height: 475px;"></div			
+	
+		<h2>Military, Healthcare and Education Expenditure (2017)</h2>
+	<p>Disclaimer: Education numbers are estimated.  With that being said, we have some ASEAN countries that spend more on education than military.</p>
+	<div id="bubble_div"
+			style ="width: 1000px; height: 475px;"></div
+
+		<h2>Military Per Capita and Education Per Capita (2017)</h2>
+	<p>Disclaimer: Education numbers are estimate.</p>
+	<div id="mileduc_div"
+			style ="width: 1000px; height: 475px;"></div
+			
+	</div><!-- content -->
+
+		<div id="content_footer">
+			<div id="footer">
+				&copy; <script>var d=new Date(); document.write(d.getFullYear());</script>
+				| <a href="#">HTML5</a> | <a href="#">CSS</a> | <a href="#">Nima Zahadat, Ph.D.</a> | <a href="#">www.w3schools.com</a>
+			</div><!-- footer -->
+		</div><!-- content_footer -->
+	</div><!-- main -->
+</body>
+</html>

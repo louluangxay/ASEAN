@@ -1,0 +1,148 @@
+<!doctype html>
+
+<html>
+<head>
+	<title>Comparing ASEAN Countries Education, Healthcare, and Military Spending</title>
+	<link rel="stylesheet" type="text/css" href="style/style.css" />
+	<script type="text/javascript"
+	        src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		//load the google charts
+		google.charts.load('current',{'packages':['corechart']});
+		
+		//load the Callback function that runs when page loads
+		google.charts.setOnLoadCallback(drawAllSheets);
+		
+		function drawAllSheets() {
+			drawSheetName('population', 
+						  'SELECT A,B,C,D,E,F,G,H,I,J,K,L,M',
+						  populationResponseHandler);
+
+			drawSheetName('military_spending',
+							'SELECT A,M',
+							military_spendingResponseHandler);
+			
+			drawSheetName('edu_per_gdp',
+							'SELECT A,B,C,E,F,G,H,I,J,K,L,M',
+							edu_per_gdpResponseHandler);
+							
+							
+		} //drawAllSheets
+		
+		function drawSheetName(sheetName, query, responseHandler) {
+			var queryString = encodeURIComponent(query);
+			var query = new google.visualization.Query(
+				'https://docs.google.com/spreadsheets/d/12uzXsy8zWzJt5UMtgust3ZPYXwetyGqf8xWubvCSzXE/gviz/tq?sheet=' +
+				sheetName + '&headers=1&tq=' + queryString);
+			query.send(responseHandler);
+		} //drawSheetName
+		
+		function populationResponseHandler(response) {
+			var data = response.getDataTable();
+			var options = {
+						height: 500,
+						vAxis: {title: 'Population in Thousand'},
+						hAxis: {title: 'Years'}
+			};
+			
+			var chart = new google.visualization.LineChart(
+						document.getElementById('population_div'));
+			
+			chart.draw(data, options);
+		} //populationResponseHandler
+		
+		function military_spendingResponseHandler(response) {
+			var data = response.getDataTable();
+			data.sort({column:1, desc:true});
+			
+			var options = {
+							colorAxis: {colors: ['#00008B', '#FF7F50', 'FFF8DC']},
+							backgroundColor: '#81d4fa',
+							datalessRegionColor: '#999',
+							defaultColor: '#f5f5f5',
+							title: 'ASEAN Military Spending Million $ (2017)',
+						
+			};
+			
+			var chart = new google.visualization.GeoChart(
+						document.getElementById('military_spending_div'));
+			
+			chart.draw(data, options);
+		} //Military_SpendingResponseHandler
+		
+		function edu_per_gdpResponseHandler(response) {
+			var data = response.getDataTable();
+			var options = {
+						height: 500,
+						vAxis: {title: 'Percentage'},
+						hAxis: {title: 'Years'}
+			};
+			
+			var chart = new google.visualization.LineChart(
+						document.getElementById('edu_per_gdp_div'));
+			
+			chart.draw(data, options);
+		} //populationResponseHandler		
+	
+	
+		
+		
+
+		
+		
+	</script>
+</head>
+<body> 
+<div id="main">
+		<div id="header">
+			<div id="logo">
+				<div id="logo_text">
+					<h1>ASEAN<span  color ="white"> Countries</span></h1>
+					<h2><font color="red" >Education, Healthcare, and Military Spending</font></h2>
+				</div><!-- logo_text -->
+			</div><!-- logo -->
+			<div id="menubar">
+				<ul id="menu">
+					<li class="selected"><a href="ASEAN.html">Home</a></li>
+					<li><a href="analysis.html">Analysis</a></li>
+				</ul>
+			</div><!-- menubar -->
+		</div><!-- header -->
+	<div id="content">
+				<!-- insert page content here -->
+				<h1>About Association of Southeast Asian Nation [ASEAN] </h1>
+				<p>
+					 ASEAN aims to promote political, economic and social cooperation and  regional stability.
+                    ASEAN was formed in  August of 1967 by Indonesia, Malaysia, Philippines, Singapore, and Thailand. 
+                    Brunei Darussalam, Vietnam, Lao PDR, Myanmar, and Cambodia joined years later bringing the total membership to 10 countries.
+				<img src="ASEANflags.jpg" style="width:1000px;height:300px;">	
+					
+				</p>
+				
+	<h2>Population of ASEAN Countries with US and China</h2>
+	<p>From this chart looking at the raw number, China and US population far exceed the ASEAN countries.  We do have one surprise with Indonesia.  
+    In 2018, their population is a little less than 40 million from the US.  Overall, the population trend (2007-2018) for ASEAN countries are flat.</p>
+	<div id="population_div"
+		 style="width:1000px; height:500px;"></div>
+	 
+	<h2>ASEAN Military Spending in 2017</h2>
+	<p>Top 3 ASEAN countries Indonesia ~8.1 Billion, Thailand ~6.3 Billion, and Singapore ~10 Billion.  Singapore population is only 5.7 million in 2017 as compared to Indonesia 266 Million </p>
+	<div id="military_spending_div"
+	     style="width:1000px; height:500px;"></div>
+		 
+	<h2>ASEAN Education Spending Percentage of GDP (2007-2016)</h2>
+	<p>This line chart I included the OCED number and the US to see where most of the ASEAN countries rank.  As of right now, ASEAN countries are spending
+    less as compare to the OCED baseline and the US. Only Vietnam and Malaysia are beating the OCED and US education expenditure. The good news is this there is an upward trend in education expenditure.</p>
+	<div id="edu_per_gdp_div"
+	     style="width: 1000px; height: 500px;"></div
+
+
+		<div id="content_footer">
+			<div id="footer">
+				&copy; <script>var d=new Date(); document.write(d.getFullYear());</script>
+				| <a href="#">HTML5</a> | <a href="#">CSS</a> | <a href="#">Nima Zahadat, Ph.D.</a> | <a href="#">www.w3schools.com</a>
+			</div><!-- footer -->
+		</div><!-- content_footer -->
+	</div><!-- main -->
+</body>
+</html>
